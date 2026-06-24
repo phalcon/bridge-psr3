@@ -23,7 +23,6 @@ use function date;
 use function end;
 use function file_get_contents;
 use function preg_match;
-use function strtoupper;
 
 final class LevelsTest extends TestCase
 {
@@ -60,7 +59,7 @@ final class LevelsTest extends TestCase
 
         // Check if the level is in the log file
         $this->assertStringContainsString(
-            '[' . strtoupper($level) . ']',
+            '[' . $level . ']',
             $content
         );
 
@@ -68,7 +67,7 @@ final class LevelsTest extends TestCase
         // Get time part
         $matches = [];
         preg_match(
-            '/\[(.*)\]\[' . strtoupper($level) . '\]/',
+            '/\[(.*)\]\[' . $level . '\]/',
             $content,
             $matches
         );
@@ -90,7 +89,7 @@ final class LevelsTest extends TestCase
     /**
      * @return string[]
      */
-    public function getExamples(): array
+    public static function getExamples(): array
     {
         return [
             ['alert'],

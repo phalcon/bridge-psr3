@@ -60,7 +60,7 @@ final class AddAdapterTest extends TestCase
         $adapter2->close();
 
         $contents = file_get_contents($outputPath . $fileName1);
-        $this->assertStringContainsString('[DEBUG] Hello', $contents);
+        $this->assertStringContainsString('[debug] Hello', $contents);
 
         $contents = file_get_contents($outputPath . $fileName2);
         $this->assertStringContainsString('Hello', $contents);

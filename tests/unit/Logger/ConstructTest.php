@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
 use Phalcon\Logger\Adapter\Stream;
+use Phalcon\Logger\Enum;
 use Phalcon\Logger\Exception;
 use Phalcon\Logger\Formatter\Json;
 use Phalcon\Bridge\Psr3\Logger;
@@ -52,15 +53,15 @@ final class ConstructTest extends TestCase
      */
     public function testLoggerConstructConstants()
     {
-        $this->assertSame(2, Logger::ALERT);
-        $this->assertSame(1, Logger::CRITICAL);
-        $this->assertSame(7, Logger::DEBUG);
-        $this->assertSame(0, Logger::EMERGENCY);
-        $this->assertSame(3, Logger::ERROR);
-        $this->assertSame(6, Logger::INFO);
-        $this->assertSame(5, Logger::NOTICE);
-        $this->assertSame(4, Logger::WARNING);
-        $this->assertSame(8, Logger::CUSTOM);
+        $this->assertSame(2, Enum::ALERT);
+        $this->assertSame(1, Enum::CRITICAL);
+        $this->assertSame(7, Enum::DEBUG);
+        $this->assertSame(0, Enum::EMERGENCY);
+        $this->assertSame(3, Enum::ERROR);
+        $this->assertSame(6, Enum::INFO);
+        $this->assertSame(5, Enum::NOTICE);
+        $this->assertSame(4, Enum::WARNING);
+        $this->assertSame(8, Enum::CUSTOM);
     }
 
     /**
@@ -87,15 +88,15 @@ final class ConstructTest extends TestCase
         $time = time();
 
         $logger->debug('This is a message');
-        $logger->log(Logger::ERROR, 'This is an error');
+        $logger->log(Enum::ERROR, 'This is an error');
         $logger->error('This is another error');
 
         $contents = file_get_contents($outputPath . $fileName);
 
         $expected = sprintf(
-            '{"level":"DEBUG","message":"This is a message","timestamp":"%s"}' . PHP_EOL .
-            '{"level":"ERROR","message":"This is an error","timestamp":"%s"}' . PHP_EOL .
-            '{"level":"ERROR","message":"This is another error","timestamp":"%s"}',
+            '{"level":"debug","message":"This is a message","timestamp":"%s"}' . PHP_EOL .
+            '{"level":"error","message":"This is an error","timestamp":"%s"}' . PHP_EOL .
+            '{"level":"error","message":"This is another error","timestamp":"%s"}',
             date('c', $time),
             date('c', $time),
             date('c', $time)

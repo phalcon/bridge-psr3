@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
 use Phalcon\Bridge\Psr3\Logger;
+use Phalcon\Logger\Enum;
 use PHPUnit\Framework\TestCase;
 
 final class GetSetLogLevelTest extends TestCase
@@ -28,14 +29,14 @@ final class GetSetLogLevelTest extends TestCase
     {
         $logger = new Logger('my-name');
 
-        $this->assertEquals(Logger::CUSTOM, $logger->getLogLevel());
+        $this->assertEquals(Enum::CUSTOM, $logger->getLogLevel());
 
-        $object = $logger->setLogLevel(Logger::INFO);
+        $object = $logger->setLogLevel(Enum::INFO);
         $this->assertInstanceOf(Logger::class, $object);
 
-        $this->assertEquals(Logger::INFO, $logger->getLogLevel());
+        $this->assertEquals(Enum::INFO, $logger->getLogLevel());
 
         $logger->setLogLevel(99);
-        $this->assertEquals(Logger::CUSTOM, $logger->getLogLevel());
+        $this->assertEquals(Enum::CUSTOM, $logger->getLogLevel());
     }
 }

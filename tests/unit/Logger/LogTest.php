@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
 use Phalcon\Logger\Adapter\Stream;
+use Phalcon\Logger\Enum;
 use Phalcon\Bridge\Psr3\Logger;
 use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;
 use function sprintf;
-use function strtoupper;
 
 final class LogTest extends TestCase
 {
@@ -46,15 +46,15 @@ final class LogTest extends TestCase
         );
 
         $levels = [
-            Logger::ALERT     => 'alert',
-            Logger::CRITICAL  => 'critical',
-            Logger::DEBUG     => 'debug',
-            Logger::EMERGENCY => 'emergency',
-            Logger::ERROR     => 'error',
-            Logger::INFO      => 'info',
-            Logger::NOTICE    => 'notice',
-            Logger::WARNING   => 'warning',
-            Logger::CUSTOM    => 'custom',
+            Enum::ALERT     => 'alert',
+            Enum::CRITICAL  => 'critical',
+            Enum::DEBUG     => 'debug',
+            Enum::EMERGENCY => 'emergency',
+            Enum::ERROR     => 'error',
+            Enum::INFO      => 'info',
+            Enum::NOTICE    => 'notice',
+            Enum::WARNING   => 'warning',
+            Enum::CUSTOM    => 'custom',
             'alert'           => 'alert',
             'critical'        => 'critical',
             'debug'           => 'debug',
@@ -75,7 +75,7 @@ final class LogTest extends TestCase
         foreach ($levels as $levelName) {
             $expected = sprintf(
                 '[%s] Message %s',
-                strtoupper($levelName),
+                $levelName,
                 $levelName
             );
 
@@ -105,24 +105,24 @@ final class LogTest extends TestCase
             ]
         );
 
-        $logger->setLogLevel(Logger::ALERT);
+        $logger->setLogLevel(Enum::ALERT);
 
         $levelsYes = [
-            Logger::ALERT     => 'alert',
-            Logger::CRITICAL  => 'critical',
-            Logger::EMERGENCY => 'emergency',
+            Enum::ALERT     => 'alert',
+            Enum::CRITICAL  => 'critical',
+            Enum::EMERGENCY => 'emergency',
             'alert'           => 'alert',
             'critical'        => 'critical',
             'emergency'       => 'emergency',
         ];
 
         $levelsNo = [
-            Logger::DEBUG   => 'debug',
-            Logger::ERROR   => 'error',
-            Logger::INFO    => 'info',
-            Logger::NOTICE  => 'notice',
-            Logger::WARNING => 'warning',
-            Logger::CUSTOM  => 'custom',
+            Enum::DEBUG   => 'debug',
+            Enum::ERROR   => 'error',
+            Enum::INFO    => 'info',
+            Enum::NOTICE  => 'notice',
+            Enum::WARNING => 'warning',
+            Enum::CUSTOM  => 'custom',
             'debug'         => 'debug',
             'error'         => 'error',
             'info'          => 'info',
@@ -144,7 +144,7 @@ final class LogTest extends TestCase
         foreach ($levelsYes as $levelName) {
             $expected = sprintf(
                 '[%s] Message %s',
-                strtoupper($levelName),
+                $levelName,
                 $levelName
             );
             $this->assertStringContainsString($expected, $contents);
@@ -153,7 +153,7 @@ final class LogTest extends TestCase
         foreach ($levelsNo as $levelName) {
             $expected = sprintf(
                 '[%s] Message %s',
-                strtoupper($levelName),
+                $levelName,
                 $levelName
             );
             $this->assertStringNotContainsString($expected, $contents);

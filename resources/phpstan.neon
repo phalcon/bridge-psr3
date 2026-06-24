@@ -3,5 +3,3 @@ parameters:
         - ../src
     level: 1
     tmpDir: ../tests/support/output
-    ignoreErrors:
-        - "#Unsafe usage of new static#"
