@@ -1,0 +1,65 @@
+services:
+  bridge-psr3-8.1:
+    container_name: bridge-psr3-8.1
+    hostname: bridge-psr3-81
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.2:
+    container_name: bridge-psr3-8.2
+    hostname: bridge-psr3-82
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.2
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.3:
+    container_name: bridge-psr3-8.3
+    hostname: bridge-psr3-83
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.3
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.4:
+    container_name: bridge-psr3-8.4
+    hostname: bridge-psr3-84
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.4
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.5:
+    container_name: bridge-psr3-8.5
+    hostname: bridge-psr3-85
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.5
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
