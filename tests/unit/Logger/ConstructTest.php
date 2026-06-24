@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Proxy\Psr3\Tests\Unit\Logger;
+namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
 use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Logger\Exception;
 use Phalcon\Logger\Formatter\Json;
-use Phalcon\Proxy\Psr3\Logger;
-use Phalcon\Proxy\Psr3\Tests\Support\Traits\SupportTrait;
+use Phalcon\Bridge\Psr3\Logger;
+use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
 use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
 

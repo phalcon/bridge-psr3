@@ -63,3 +63,75 @@ services:
       - .:/srv
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  # --- cphalcon C-extension lane (alternative backend) ---
+
+  bridge-psr3-8.1-ext:
+    container_name: bridge-psr3-8.1-ext
+    hostname: bridge-psr3-81-ext
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.1
+        PHALCON_EXT: 1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.2-ext:
+    container_name: bridge-psr3-8.2-ext
+    hostname: bridge-psr3-82-ext
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.2
+        PHALCON_EXT: 1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.3-ext:
+    container_name: bridge-psr3-8.3-ext
+    hostname: bridge-psr3-83-ext
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.3
+        PHALCON_EXT: 1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.4-ext:
+    container_name: bridge-psr3-8.4-ext
+    hostname: bridge-psr3-84-ext
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.4
+        PHALCON_EXT: 1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  bridge-psr3-8.5-ext:
+    container_name: bridge-psr3-8.5-ext
+    hostname: bridge-psr3-85-ext
+    build:
+      dockerfile: resources/docker/develop/Dockerfile
+      args:
+        PHP_VERSION: 8.5
+        PHALCON_EXT: 1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

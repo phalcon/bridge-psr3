@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Phalcon\Proxy\Psr3;
+namespace Phalcon\Bridge\Psr3;
 
 use Phalcon\Logger\AbstractLogger;
 use Phalcon\Logger\Adapter\AdapterInterface;
@@ -22,9 +22,9 @@ use Psr\Log\LoggerTrait;
 use Stringable;
 
 /**
- * Phalcon Proxy PSR-3.
+ * Phalcon Bridge PSR-3.
  *
- * A PSR compatible proxy class utilizing the Phalcon\Logger.
+ * A PSR compatible bridge class utilizing the Phalcon\Logger.
  *
  * @property AdapterInterface[] $adapters
  * @property array              $excluded

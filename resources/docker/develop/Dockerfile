@@ -59,6 +59,19 @@ find /var/cache -type f -delete
 find /var/log -type f -delete
 EOT
 
+# Optional cphalcon C-extension backend. PHALCON_EXT=0 (default) = the
+# phalcon/phalcon package backend; PHALCON_EXT=1 = the cphalcon extension
+# backend. When the extension is loaded its Phalcon\Logger\* classes are
+# internal and win over any dormant phalcon/phalcon in vendor/.
+ARG PHALCON_EXT=0
+RUN <<EOT
+set -eux
+if [ "${PHALCON_EXT}" = "1" ]; then
+    pecl install phalcon
+    docker-php-ext-enable phalcon
+fi
+EOT
+
 # hadolint ignore=DL3022
 COPY --from=composer/composer:2 --chown=${USER}:${GROUP} --chmod=0770 /usr/bin/composer /usr/bin/composer
 COPY resources/docker/develop/.bashrc /home/${USER}/.bashrc

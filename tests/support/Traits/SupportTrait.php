@@ -1,6 +1,6 @@
 <?php
 
-namespace Phalcon\Proxy\Psr3\Tests\Support\Traits;
+namespace Phalcon\Bridge\Psr3\Tests\Support\Traits;
 
 use function dirname;
 use function file_exists;
