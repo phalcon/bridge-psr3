@@ -67,8 +67,10 @@ ARG PHALCON_EXT=0
 RUN <<EOT
 set -eux
 if [ "${PHALCON_EXT}" = "1" ]; then
-    pecl install phalcon
-    docker-php-ext-enable phalcon
+    # cphalcon installed via PIE (PECL is deprecated)
+    wget -qO /usr/local/bin/pie https://github.com/php/pie/releases/latest/download/pie.phar
+    chmod +x /usr/local/bin/pie
+    pie install phalcon/cphalcon
 fi
 EOT
 

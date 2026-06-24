@@ -5,157 +5,103 @@
 # For the full copyright and license information, please view
 # the LICENSE file that was distributed with this source code.
 
-name: Phalcon CI
+name: "Bridge PSR-3 CI"
 
 on:
-  schedule:
-    - cron: '0 2 * * *' # Daily at 02:00 runs only on default branch
   push:
     paths-ignore:
       - '**.md'
-      - '**.txt'
   pull_request:
   workflow_dispatch:
 
-env:
-  # All versions should be declared here
-  PHALCON_VERSION: 5.6.0
+permissions:
+  contents: read
 
-  # For tests
-  LANG: en_US.UTF-8
-  LANGUAGE: en_US.UTF-8
-  LC_ALL: en_US.UTF-8
-
-  # PHP extensions required by Composer
-  # (adding phalcon version here until I figure out how to use the variable above)
-  EXTENSIONS: apcu, phalcon-5.6.0
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-
-# Quality Tools
   quality:
-    name: Quality Tests
+    name: "Code quality (phpcs + phpstan)"
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read # to fetch code (actions/checkout)
-
     steps:
-      - uses: actions/checkout@v3
-#      - uses: php-actions/composer@v6
+      - uses: actions/checkout@v4
 
-      - name: Run PHP CodeSniffer
-        run: docker run --rm -v $(pwd):/data cytopia/phpcs --standard=./phpcs.xml
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring
+          tools: composer:v2
+          coverage: none
 
-#      - name: Get PHPStan PHAR
-#        run: |
-#          curl --silent -H "User-agent: cURL (https://github.com/php-actions)" -L \
-#          "https://www.getrelease.download/phpstan/phpstan/1.8.11/phar" > custom-phpstan.phar
-#
-#      - name: Run PHPStan
-#        uses: php-actions/phpstan@v3
-#        with:
-#          php_version: 8.0
-#          path: src/
-#          vendored_phpstan_path: custom-phpstan.phar
-#          level: max
-#          autoload_file: ./vendor/autoload.php
+      - name: "Install dependencies"
+        run: composer install --prefer-dist --no-interaction --no-progress
 
-# Running Tests
-  build-and-test:
-    name: tests / PHP-${{ matrix.php }}
+      - name: "PHPCS"
+        run: composer cs
+
+      - name: "PHPStan"
+        run: composer analyze
+
+  tests:
+    name: "Tests / PHP ${{ matrix.php }} / ${{ matrix.backend }}"
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read # to fetch code (actions/checkout)
-
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.0', '8.1', '8.2', '8.3' ]
-
+        php: ['8.1', '8.2', '8.3', '8.4', '8.5']
+        backend: ['package', 'ext']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: ${{ env.EXTENSIONS }}
-          ini-values: apc.enable_cli=on, session.save_path=${{ env.SESSION_SAVE_PATH }}
-          tools: pecl, composer:v2
+          extensions: mbstring
+          tools: composer:v2, pie
           coverage: xdebug
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # cphalcon C-extension backend, installed with PIE (PECL is deprecated)
+      - name: "Install cphalcon via PIE"
+        if: matrix.backend == 'ext'
+        run: pie install phalcon/cphalcon
 
       - name: "Validate composer"
         run: composer validate --no-check-all --no-check-publish
 
-      - name: "Install development dependencies with Composer"
-        uses: "ramsey/composer-install@v2"
-        with:
-          composer-options: "--prefer-dist"
+      - name: "Install dependencies"
+        run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Run Unit Tests
-        if: always()
-        run: |
-          vendor/bin/phpunit tests/unit --testdox --process-isolation -v 
+      - name: "Run unit tests"
+        run: composer test-unit
 
-
-# Qodana
-  qodana:
-    name: Qodana
+  coverage:
+    name: "Coverage → Codecov"
+    needs: tests
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
-
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
-          fetch-depth: 0  # a full history is required for pull request analysis
+      - uses: actions/checkout@v4
 
-      - name: Setup PHP
+      - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
-          extensions: ${{ env.EXTENSIONS }}
-          ini-values: apc.enable_cli=on, session.save_path=${{ env.SESSION_SAVE_PATH }}
-          tools: pecl, composer:v2
+          php-version: '8.4'
+          extensions: mbstring
+          tools: composer:v2
           coverage: xdebug
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Validate composer"
-        run: composer validate --no-check-all --no-check-publish
+      - name: "Install dependencies"
+        run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: "Install development dependencies with Composer"
-        uses: "ramsey/composer-install@v2"
+      - name: "Generate coverage (clover)"
+        run: composer test-coverage-clover
+
+      - name: "Upload to Codecov"
+        uses: codecov/codecov-action@v4
         with:
-          composer-options: "--prefer-dist"
-
-      - name: Run Unit Tests
-        if: always()
-        run: |
-          vendor/bin/phpunit tests/unit \
-            --process-isolation \
-            -v \
-            --coverage-php tests/support/output/coverage.xml
-
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2023.2
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-        with:
-          args: --baseline,qodana.sarif.json
-
-      - name: "Upload to Qodana"
-        run: |
-          docker run \
-            -v $(pwd):/data/project/ \
-            -v ./tests/support/output/:/data/coverage \
-            -e QODANA_TOKEN="${{ secrets.QODANA_TOKEN }}" \
-            jetbrains/qodana-php
+          files: tests/support/output/clover.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+        continue-on-error: true
