@@ -20,11 +20,18 @@
         }
     },
     "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true
+        },
         "optimize-autoloader": true,
+        "platform": {
+            "php": "8.1.99"
+        },
         "preferred-install": "dist",
         "sort-packages": true
     },
     "require-dev": {
+        "infection/infection": "^0.28",
         "pds/skeleton": "^1.0",
         "phalcon/ide-stubs": "^5.6",
         "phalcon/phalcon": "^6.0@alpha",
@@ -41,9 +48,10 @@
         "analyze": "phpstan analyse -c resources/phpstan.neon --memory-limit 1024M",
         "cs": "phpcs --standard=resources/phpcs.xml",
         "cs-fix": "phpcbf --standard=resources/phpcs.xml",
-        "test-unit": "phpunit -c resources/phpunit.xml.dist --testdox --process-isolation",
-        "test-coverage-text": "phpunit -c resources/phpunit.xml.dist --testdox --process-isolation --coverage-text",
-        "test-coverage-clover": "phpunit -c resources/phpunit.xml.dist --testdox --process-isolation --coverage-clover tests/support/output/clover.xml",
-        "test-coverage-html": "phpunit -c resources/phpunit.xml.dist --testdox --process-isolation --coverage-html tests/support/output/"
+        "mutation": "infection --configuration=resources/infection.json5 --threads=max",
+        "test-unit": "phpunit -c resources/phpunit.xml.dist --testdox",
+        "test-coverage-text": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-text",
+        "test-coverage-clover": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-clover tests/support/output/clover.xml",
+        "test-coverage-html": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-html tests/support/output/"
     }
 }
