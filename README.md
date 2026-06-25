@@ -5,7 +5,10 @@
 
 Phalcon is an open source web framework delivered as a C extension for the PHP language providing high performance and lower resource consumption.
 
-Bridge PSR-3 is a package that offers PSR-3 compatibility with `Phalcon\Logger\Logger`. Developers that wish to use PSR-3 alongside Phalcon, can use this package which is a bridge to `Phalcon\Logger\Logger`.
+Bridge PSR-3 connects the Phalcon logger and the PSR-3 (`Psr\Log\LoggerInterface`) standard in both directions:
+
+* **`Logger`** — a PSR-3 logger backed by Phalcon's logging adapters. Use it wherever a `Psr\Log\LoggerInterface` is expected.
+* **`Adapter`** — a Phalcon log adapter that forwards to a PSR-3 logger. Use it to make any PSR-3 logger (e.g. Monolog) act as a Phalcon log target.
 
 ## Installation
 
@@ -13,6 +16,56 @@ You can install the package using composer
 
 ```sh
 composer require phalcon/bridge-psr3
+```
+
+## Usage
+
+### `Logger` — use Phalcon logging through a PSR-3 interface
+
+`Phalcon\Bridge\Psr3\Logger` *is* a `Psr\Log\LoggerInterface`, configured with
+Phalcon logging adapters. Hand it to any code that expects a PSR-3 logger.
+
+```php
+use Phalcon\Bridge\Psr3\Logger;
+use Phalcon\Logger\Adapter\Stream;
+
+$logger = new Logger(
+    'my-app',
+    [
+        'main' => new Stream('/var/log/app.log'),
+    ]
+);
+
+// $logger is a Psr\Log\LoggerInterface
+$logger->info('User logged in', ['id' => 42]);
+$logger->error('Payment failed');
+```
+
+### `Adapter` — use a PSR-3 logger as a Phalcon log target
+
+`Phalcon\Bridge\Psr3\Adapter` is a Phalcon log adapter that forwards to a
+wrapped PSR-3 logger. Add it to a `Phalcon\Logger\Logger` and inject that
+wherever Phalcon expects a logger.
+
+```php
+use Phalcon\Bridge\Psr3\Adapter;
+use Phalcon\Logger\Logger;
+
+// Any Psr\Log\LoggerInterface, e.g. Monolog
+$psr = new Monolog\Logger('my-app');
+
+$logger = new Logger(
+    'my-app',
+    [
+        'psr' => new Adapter($psr),
+    ]
+);
+
+// Phalcon log calls now flow into the PSR-3 logger
+$logger->warning('Low disk space');
+
+// e.g. inject into the DataMapper profiler, which expects a Phalcon logger
+$profiler = new Phalcon\DataMapper\Pdo\Profiler\Profiler($logger);
 ```
 
 ## Links
