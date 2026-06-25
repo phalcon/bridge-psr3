@@ -64,10 +64,12 @@ jobs:
           tools: composer:v2, pie
           coverage: xdebug
 
-      # cphalcon C-extension backend, installed with PIE (PECL is deprecated)
+      # cphalcon C-extension backend, installed with PIE (PECL is deprecated).
+      # Run PIE as root: installing/enabling the extension writes to system PHP
+      # paths, and PIE refuses to self-elevate via sudo in CI's non-interactive shell.
       - name: "Install cphalcon via PIE"
         if: matrix.backend == 'ext'
-        run: pie install phalcon/cphalcon
+        run: sudo $(which pie) install phalcon/cphalcon
 
       - name: "Validate composer"
         run: composer validate --no-check-all --no-check-publish
