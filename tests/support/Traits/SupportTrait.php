@@ -2,7 +2,8 @@
 
 namespace Phalcon\Bridge\Psr3\Tests\Support\Traits;
 
-use function dirname;
+use Phalcon\Talon\Talon;
+
 use function file_exists;
 use function gc_collect_cycles;
 use function glob;
@@ -18,11 +19,14 @@ use const GLOB_MARK;
 trait SupportTrait
 {
     /**
+     * Talon's canonical output directory (`tests/_output`), created by the
+     * talon runner on every run.
+     *
      * @return string
      */
     private function getLogsDirectory(): string
     {
-        return dirname(dirname(dirname(__FILE__))) . '/support/output/';
+        return Talon::settings()->outputPath() . '/';
     }
 
     /**

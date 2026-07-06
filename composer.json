@@ -20,9 +20,6 @@
         }
     },
     "config": {
-        "allow-plugins": {
-            "infection/extension-installer": true
-        },
         "optimize-autoloader": true,
         "platform": {
             "php": "8.1.99"
@@ -31,7 +28,7 @@
         "sort-packages": true
     },
     "require-dev": {
-        "infection/infection": "^0.28",
+        "friendsofphp/php-cs-fixer": "^3.95",
         "pds/skeleton": "^1.0",
         "phalcon/ide-stubs": "^5.6",
         "phalcon/phalcon": "^6.0@alpha",
@@ -49,7 +46,8 @@
         "analyze": "phpstan analyse -c resources/phpstan.neon --memory-limit 1024M",
         "cs": "phpcs --standard=resources/phpcs.xml",
         "cs-fix": "phpcbf --standard=resources/phpcs.xml",
-        "mutation": "infection --configuration=resources/infection.json5 --threads=max",
+        "cs-fixer": "php-cs-fixer fix --config=resources/php-cs-fixer.php --dry-run --diff",
+        "cs-fixer-fix": "php-cs-fixer fix --config=resources/php-cs-fixer.php",
         "test": "talon run",
         "test-unit": "talon run unit",
         "test-coverage": "talon run unit -- --coverage-clover tests/_output/coverage.xml",

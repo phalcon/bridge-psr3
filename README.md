@@ -70,6 +70,69 @@ $logger->warning('Low disk space');
 $profiler = new Phalcon\DataMapper\Pdo\Profiler\Profiler($logger);
 ```
 
+## Development
+
+The repository ships a Docker setup for local development and testing. You only need Docker +
+Docker Compose; the PHP runtime and Phalcon are provided inside the container.
+
+### Quick start
+
+```bash
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app composer test
+```
+
+> `app` is the Compose *service* name. The running container is `bridge-psr3-app` (override with
+> `PROJECT_PREFIX`). It stays up via a `sleep infinity` keepalive, so you can
+> `docker compose exec app <cmd>` freely (e.g. `composer update`).
+
+### Choosing the PHP version
+
+The image is built for one PHP version at a time, selected with the `PHP_VERSION` build arg
+(default `8.5`; supported `8.1`–`8.5`). Because it is a **build** arg, changing it requires a
+rebuild (`--build`):
+
+```bash
+docker compose up -d --build                  # PHP 8.5 (default)
+PHP_VERSION=8.1 docker compose up -d --build  # PHP 8.1
+PHP_VERSION=8.4 docker compose up -d --build  # PHP 8.4
+```
+
+The container keeps the same name, so each rebuild **replaces** the previous one. To run several
+versions side by side, give each its own Compose project and prefix:
+
+```bash
+PHP_VERSION=8.1 PROJECT_PREFIX=bridge-psr3-81 docker compose -p bridge-psr3-81 up -d --build
+# then: docker exec -w /srv bridge-psr3-81-app composer test
+```
+
+### Choosing the backend
+
+The bridge works against either Phalcon runtime, selected with the `PHALCON_VARIANT` build arg:
+
+```bash
+docker compose up -d --build                     # package: phalcon/phalcon (v6, default)
+PHALCON_VARIANT=ext docker compose up -d --build  # ext: cphalcon C extension (v5)
+```
+
+Tip: drop `PHP_VERSION` / `PHALCON_VARIANT` into a `.env` file in the repo root to avoid prefixing
+every command — Compose reads it automatically.
+
+### Composer scripts
+
+Run them inside the container, e.g. `docker compose exec app composer cs`:
+
+| Script | Description |
+| --- | --- |
+| `composer cs` | PHP_CodeSniffer (PSR-12) |
+| `composer cs-fix` | Auto-fix coding-standard issues (phpcbf) |
+| `composer cs-fixer` | PHP CS Fixer (dry-run) |
+| `composer cs-fixer-fix` | Apply PHP CS Fixer |
+| `composer analyze` | PHPStan static analysis |
+| `composer test` / `composer test-unit` | Unit tests via [`phalcon/talon`](https://github.com/phalcon/talon) |
+| `composer test-coverage` | Tests + Clover coverage (`tests/_output/coverage.xml`) |
+
 ## Links
 
 ### General

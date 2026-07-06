@@ -2,4 +2,4 @@ parameters:
     paths:
         - ../src
     level: 1
-    tmpDir: ../tests/support/output
+    tmpDir: ../tests/_output
