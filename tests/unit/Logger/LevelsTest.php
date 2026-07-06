@@ -88,7 +88,7 @@ final class LevelsTest extends TestCase
             $content,
             $matches
         );
-        $this->assertEquals(count($matches), 2);
+        $this->assertSame(2, count($matches));
 
         // Get Extract time
         $date             = end($matches);
