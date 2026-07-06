@@ -42,6 +42,16 @@ final class ProcessTest extends TestCase
         $this->assertSame(['k' => 'v'], $double->records[0]['context']);
     }
 
+    public function testMapsCustomToDebug(): void
+    {
+        $double = new InMemoryLogger();
+        $logger = new PhalconLogger('test', ['psr' => new Adapter($double)]);
+
+        $logger->log(Enum::CUSTOM, 'c');
+
+        $this->assertSame('debug', $double->records[0]['level']);
+    }
+
     public function testMapsTraceToDebug(): void
     {
         $double = new InMemoryLogger();
@@ -49,16 +59,6 @@ final class ProcessTest extends TestCase
         $logger->setLogLevel(Enum::TRACE);
 
         $logger->trace('t');
-
-        $this->assertSame('debug', $double->records[0]['level']);
-    }
-
-    public function testMapsCustomToDebug(): void
-    {
-        $double = new InMemoryLogger();
-        $logger = new PhalconLogger('test', ['psr' => new Adapter($double)]);
-
-        $logger->log(Enum::CUSTOM, 'c');
 
         $this->assertSame('debug', $double->records[0]['level']);
     }

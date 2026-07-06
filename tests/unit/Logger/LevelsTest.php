@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
 use DateTime;
-use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Bridge\Psr3\Logger;
 use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
+use Phalcon\Logger\Adapter\Stream;
 use PHPUnit\Framework\TestCase;
 
 use function date;
@@ -27,6 +27,23 @@ use function preg_match;
 final class LevelsTest extends TestCase
 {
     use SupportTrait;
+
+    /**
+     * @return string[]
+     */
+    public static function getExamples(): array
+    {
+        return [
+            ['alert'],
+            ['critical'],
+            ['debug'],
+            ['emergency'],
+            ['error'],
+            ['info'],
+            ['notice'],
+            ['warning'],
+        ];
+    }
 
     /**
      * Tests Phalcon\Logger :: alert()
@@ -84,22 +101,5 @@ final class LevelsTest extends TestCase
         $this->assertLessThan($nSecondThreshold, $nInterval);
 
         $this->safeDeleteFile($outputPath . $fileName);
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getExamples(): array
-    {
-        return [
-            ['alert'],
-            ['critical'],
-            ['debug'],
-            ['emergency'],
-            ['error'],
-            ['info'],
-            ['notice'],
-            ['warning'],
-        ];
     }
 }

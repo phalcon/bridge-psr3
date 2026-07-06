@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
+use Phalcon\Bridge\Psr3\Logger;
+use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
 use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Logger\Enum;
 use Phalcon\Logger\Exception;
 use Phalcon\Logger\Formatter\Json;
-use Phalcon\Bridge\Psr3\Logger;
-use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
-use Psr\Log\LoggerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 use function date;
 use function file_get_contents;
@@ -32,18 +32,6 @@ use const PHP_EOL;
 final class ConstructTest extends TestCase
 {
     use SupportTrait;
-
-    /**
-     * Tests Phalcon\Logger :: __construct() - implement PSR
-     *
-     * @author Phalcon Team <team@phalcon.io>
-     * @since  2020-09-09
-     */
-    public function testLoggerConstructImplementPsr()
-    {
-        $logger = new Logger('my-logger');
-        $this->assertInstanceOf(LoggerInterface::class, $logger);
-    }
 
     /**
      * Tests Phalcon\Logger :: __construct() - constants
@@ -62,6 +50,51 @@ final class ConstructTest extends TestCase
         $this->assertSame(5, Enum::NOTICE);
         $this->assertSame(4, Enum::WARNING);
         $this->assertSame(8, Enum::CUSTOM);
+    }
+
+    /**
+     * Tests Phalcon\Logger :: __construct() - implement PSR
+     *
+     * @author Phalcon Team <team@phalcon.io>
+     * @since  2020-09-09
+     */
+    public function testLoggerConstructImplementPsr()
+    {
+        $logger = new Logger('my-logger');
+        $this->assertInstanceOf(LoggerInterface::class, $logger);
+    }
+
+    /**
+     * Tests Phalcon\Logger :: __construct() - no adapter exception
+     *
+     * @author Phalcon Team <team@phalcon.io>
+     * @since  2020-09-09
+     */
+    public function testLoggerConstructNoAdapterException()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('No adapters specified');
+
+        $logger = new Logger('my-logger');
+        $logger->info('Some message');
+    }
+
+    /**
+     * Tests Phalcon\Logger :: __construct() - read only mode exception
+     *
+     * @author Phalcon Team <team@phalcon.io>
+     * @since  2020-09-09
+     */
+    public function testLoggerConstructStreamReadOnlyModeException()
+    {
+        $fileName   = $this->getNewFileName('log');
+        $outputPath = $this->getLogsDirectory();
+        $file       = $outputPath . $fileName;
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Adapter cannot be opened in read mode');
+
+        $adapter = new Stream($file, ['mode' => 'r',]);
     }
 
     /**
@@ -106,38 +139,5 @@ final class ConstructTest extends TestCase
 
         $adapter->close();
         $this->safeDeleteFile($outputPath . $fileName);
-    }
-
-    /**
-     * Tests Phalcon\Logger :: __construct() - read only mode exception
-     *
-     * @author Phalcon Team <team@phalcon.io>
-     * @since  2020-09-09
-     */
-    public function testLoggerConstructStreamReadOnlyModeException()
-    {
-        $fileName   = $this->getNewFileName('log');
-        $outputPath = $this->getLogsDirectory();
-        $file       = $outputPath . $fileName;
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Adapter cannot be opened in read mode');
-
-        $adapter = new Stream($file, ['mode' => 'r',]);
-    }
-
-    /**
-     * Tests Phalcon\Logger :: __construct() - no adapter exception
-     *
-     * @author Phalcon Team <team@phalcon.io>
-     * @since  2020-09-09
-     */
-    public function testLoggerConstructNoAdapterException()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No adapters specified');
-
-        $logger = new Logger('my-logger');
-        $logger->info('Some message');
     }
 }

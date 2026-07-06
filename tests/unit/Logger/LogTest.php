@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
-use Phalcon\Logger\Adapter\Stream;
-use Phalcon\Logger\Enum;
 use Phalcon\Bridge\Psr3\Logger;
 use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
+use Phalcon\Logger\Adapter\Stream;
+use Phalcon\Logger\Enum;
 use PHPUnit\Framework\TestCase;
 
 use function file_get_contents;

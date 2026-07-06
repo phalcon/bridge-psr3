@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Phalcon\Bridge\Psr3\Tests\Unit\Logger;
 
-use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Bridge\Psr3\Logger;
 use Phalcon\Bridge\Psr3\Tests\Support\Traits\SupportTrait;
+use Phalcon\Logger\Adapter\Stream;
 use PHPUnit\Framework\TestCase;
 
 final class SetAdaptersTest extends TestCase
