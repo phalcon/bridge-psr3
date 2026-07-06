@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   quality:
-    name: "Code quality (phpcs + phpstan)"
+    name: "Code quality (phpcs + phpstan + php-cs-fixer)"
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -53,6 +53,9 @@ jobs:
 
       - name: "PHPStan"
         run: composer analyze
+
+      - name: "PHP CS Fixer (dry-run)"
+        run: composer cs-fixer
 
   tests:
     name: "Tests / PHP ${{ matrix.php }} / ${{ matrix.backend }}"
