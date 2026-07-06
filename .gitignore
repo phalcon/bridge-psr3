@@ -1,3 +1,5 @@
 /vendor
 /tests/support/output/
+tests/_output/*
+!tests/_output/.gitignore
 .env
