@@ -35,6 +35,7 @@
         "pds/skeleton": "^1.0",
         "phalcon/ide-stubs": "^5.6",
         "phalcon/phalcon": "^6.0@alpha",
+        "phalcon/talon": "^0.6.0",
         "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^10.5",
         "squizlabs/php_codesniffer": "^3.8",
@@ -49,9 +50,9 @@
         "cs": "phpcs --standard=resources/phpcs.xml",
         "cs-fix": "phpcbf --standard=resources/phpcs.xml",
         "mutation": "infection --configuration=resources/infection.json5 --threads=max",
-        "test-unit": "phpunit -c resources/phpunit.xml.dist --testdox",
-        "test-coverage-text": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-text",
-        "test-coverage-clover": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-clover tests/support/output/clover.xml",
-        "test-coverage-html": "phpunit -c resources/phpunit.xml.dist --testdox --coverage-html tests/support/output/"
+        "test": "talon run",
+        "test-unit": "talon run unit",
+        "test-coverage": "talon run unit -- --coverage-clover tests/_output/coverage.xml",
+        "test-coverage-html": "talon run unit -- --coverage-html tests/_output/coverage"
     }
 }

@@ -1,14 +1,16 @@
 # Phalcon Framework - Bridge PSR-3
 
-[![PDS Skeleton][pds_skeleton]](https://github.com/php-pds/skeleton)
-[![Phalcon CI][actions_badge]](https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml)
+[![Bridge PSR-3 CI][ci-badge]][ci-link]
+[![Quality Gate Status][sonar-quality-badge]][sonar-link]
+[![Coverage][sonar-coverage-badge]][sonar-link]
+[![PDS Skeleton][pds-skeleton-badge]][pds-skeleton-link]
 
 Phalcon is an open source web framework delivered as a C extension for the PHP language providing high performance and lower resource consumption.
 
 Bridge PSR-3 connects the Phalcon logger and the PSR-3 (`Psr\Log\LoggerInterface`) standard in both directions:
 
-* **`Logger`** — a PSR-3 logger backed by Phalcon's logging adapters. Use it wherever a `Psr\Log\LoggerInterface` is expected.
-* **`Adapter`** — a Phalcon log adapter that forwards to a PSR-3 logger. Use it to make any PSR-3 logger (e.g. Monolog) act as a Phalcon log target.
+* **`Logger`** - a PSR-3 logger backed by Phalcon's logging adapters. Use it wherever a `Psr\Log\LoggerInterface` is expected.
+* **`Adapter`** - a Phalcon log adapter that forwards to a PSR-3 logger. Use it to make any PSR-3 logger (e.g. Monolog) act as a Phalcon log target.
 
 ## Installation
 
@@ -20,7 +22,7 @@ composer require phalcon/bridge-psr3
 
 ## Usage
 
-### `Logger` — use Phalcon logging through a PSR-3 interface
+### `Logger` - use Phalcon logging through a PSR-3 interface
 
 `Phalcon\Bridge\Psr3\Logger` *is* a `Psr\Log\LoggerInterface`, configured with
 Phalcon logging adapters. Hand it to any code that expects a PSR-3 logger.
@@ -41,7 +43,7 @@ $logger->info('User logged in', ['id' => 42]);
 $logger->error('Payment failed');
 ```
 
-### `Adapter` — use a PSR-3 logger as a Phalcon log target
+### `Adapter` - use a PSR-3 logger as a Phalcon log target
 
 `Phalcon\Bridge\Psr3\Adapter` is a Phalcon log adapter that forwards to a
 wrapped PSR-3 logger. Add it to a `Phalcon\Logger\Logger` and inject that
@@ -88,7 +90,11 @@ $profiler = new Phalcon\DataMapper\Pdo\Profiler\Profiler($logger);
 
 
 <!-- External links should be here -->
-[actions_badge]: https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml/badge.svg
-[codecov_badge]: https://codecov.io/gh/phalcon/bridge-psr3/branch/master/graph/badge.svg?token=J2WQtnpAyT
-[pds_skeleton]: https://img.shields.io/badge/pds-skeleton-blue.svg?style=flat-square
-[discord-badge]: https://img.shields.io/discord/310910488152375297?label=Discord&logo=discord&style=flat-square
+[ci-badge]:             https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml/badge.svg?branch=main
+[ci-link]:              https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml
+[sonar-quality-badge]:  https://sonarcloud.io/api/project_badges/measure?project=phalcon_bridge-psr3&metric=alert_status
+[sonar-coverage-badge]: https://sonarcloud.io/api/project_badges/measure?project=phalcon_bridge-psr3&metric=coverage
+[sonar-link]:           https://sonarcloud.io/summary/new_code?id=phalcon_bridge-psr3
+[pds-skeleton-badge]:   https://img.shields.io/badge/pds-skeleton-blue.svg?style=flat-square
+[pds-skeleton-link]:    https://github.com/php-pds/skeleton
+[discord-badge]:        https://img.shields.io/discord/310910488152375297?label=Discord&logo=discord&style=flat-square
