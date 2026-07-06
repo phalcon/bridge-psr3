@@ -153,7 +153,7 @@ Run them inside the container, e.g. `docker compose exec app composer cs`:
 
 
 <!-- External links should be here -->
-[ci-badge]:             https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml/badge.svg?branch=main
+[ci-badge]:             https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml/badge.svg?branch=master
 [ci-link]:              https://github.com/phalcon/bridge-psr3/actions/workflows/main.yml
 [sonar-quality-badge]:  https://sonarcloud.io/api/project_badges/measure?project=phalcon_bridge-psr3&metric=alert_status
 [sonar-coverage-badge]: https://sonarcloud.io/api/project_badges/measure?project=phalcon_bridge-psr3&metric=coverage
