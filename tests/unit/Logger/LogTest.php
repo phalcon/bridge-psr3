@@ -35,8 +35,8 @@ final class LogTest extends TestCase
     public function testLoggerLog()
     {
         $outputPath  = $this->getLogsDirectory();
-        $fileName = $this->getNewFileName('log');
-        $adapter  = new Stream($outputPath . $fileName);
+        $fileName    = $this->getNewFileName('log');
+        $adapter     = new Stream($outputPath . $fileName);
 
         $logger = new Logger(
             'my-logger',
@@ -46,15 +46,15 @@ final class LogTest extends TestCase
         );
 
         $levels = [
-            Enum::ALERT     => 'alert',
-            Enum::CRITICAL  => 'critical',
-            Enum::DEBUG     => 'debug',
-            Enum::EMERGENCY => 'emergency',
-            Enum::ERROR     => 'error',
-            Enum::INFO      => 'info',
-            Enum::NOTICE    => 'notice',
-            Enum::WARNING   => 'warning',
-            Enum::CUSTOM    => 'custom',
+            Enum::ALERT       => 'alert',
+            Enum::CRITICAL    => 'critical',
+            Enum::DEBUG       => 'debug',
+            Enum::EMERGENCY   => 'emergency',
+            Enum::ERROR       => 'error',
+            Enum::INFO        => 'info',
+            Enum::NOTICE      => 'notice',
+            Enum::WARNING     => 'warning',
+            Enum::CUSTOM      => 'custom',
             'alert'           => 'alert',
             'critical'        => 'critical',
             'debug'           => 'debug',
@@ -95,8 +95,8 @@ final class LogTest extends TestCase
     public function testLoggerLogLogLevel()
     {
         $outputPath  = $this->getLogsDirectory();
-        $fileName = $this->getNewFileName('log');
-        $adapter  = new Stream($outputPath . $fileName);
+        $fileName    = $this->getNewFileName('log');
+        $adapter     = new Stream($outputPath . $fileName);
 
         $logger = new Logger(
             'my-logger',
@@ -108,21 +108,21 @@ final class LogTest extends TestCase
         $logger->setLogLevel(Enum::ALERT);
 
         $levelsYes = [
-            Enum::ALERT     => 'alert',
-            Enum::CRITICAL  => 'critical',
-            Enum::EMERGENCY => 'emergency',
+            Enum::ALERT       => 'alert',
+            Enum::CRITICAL    => 'critical',
+            Enum::EMERGENCY   => 'emergency',
             'alert'           => 'alert',
             'critical'        => 'critical',
             'emergency'       => 'emergency',
         ];
 
         $levelsNo = [
-            Enum::DEBUG   => 'debug',
-            Enum::ERROR   => 'error',
-            Enum::INFO    => 'info',
-            Enum::NOTICE  => 'notice',
-            Enum::WARNING => 'warning',
-            Enum::CUSTOM  => 'custom',
+            Enum::DEBUG     => 'debug',
+            Enum::ERROR     => 'error',
+            Enum::INFO      => 'info',
+            Enum::NOTICE    => 'notice',
+            Enum::WARNING   => 'warning',
+            Enum::CUSTOM    => 'custom',
             'debug'         => 'debug',
             'error'         => 'error',
             'info'          => 'info',

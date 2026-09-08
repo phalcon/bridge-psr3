@@ -57,8 +57,8 @@ final class LevelsTest extends TestCase
     {
         $fileName   = $this->getNewFileName('log');
         $outputPath = $this->getLogsDirectory();
-        $adapter  = new Stream($outputPath . $fileName);
-        $logger   = new Logger('my-logger', ['one' => $adapter]);
+        $adapter    = new Stream($outputPath . $fileName);
+        $logger     = new Logger('my-logger', ['one' => $adapter]);
 
         $logString = 'Hello';
         $logTime   = date('c');

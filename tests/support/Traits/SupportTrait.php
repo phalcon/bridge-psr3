@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Phalcon\Bridge\Psr3\Tests\Support\Traits;
 
@@ -21,8 +21,6 @@ trait SupportTrait
     /**
      * Talon's canonical output directory (`tests/_output`), created by the
      * talon runner on every run.
-     *
-     * @return string
      */
     private function getLogsDirectory(): string
     {
@@ -34,8 +32,6 @@ trait SupportTrait
      *
      * @param string $prefix A prefix for the file
      * @param string $suffix A suffix for the file
-     *
-     * @return string
      */
     private function getNewFileName(string $prefix = '', string $suffix = 'log'): string
     {
@@ -45,9 +41,6 @@ trait SupportTrait
         return uniqid($prefix, true) . '.' . $suffix;
     }
 
-    /**
-     * @param string $directory
-     */
     private function safeDeleteDirectory(string $directory): void
     {
         $files = glob($directory . '*', GLOB_MARK);
@@ -64,9 +57,6 @@ trait SupportTrait
         }
     }
 
-    /**
-     * @param string $filename
-     */
     private function safeDeleteFile(string $filename): void
     {
         if (file_exists($filename) && is_file($filename)) {
