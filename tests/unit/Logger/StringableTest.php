@@ -23,7 +23,7 @@ final class StringableTest extends TestCase
         $adapter    = new Stream($outputPath . $fileName);
         $logger     = new Logger('my-logger', ['one' => $adapter]);
 
-        $message = new class implements Stringable {
+        $message = new class () implements Stringable {
             public function __toString(): string
             {
                 return 'stringified message';
